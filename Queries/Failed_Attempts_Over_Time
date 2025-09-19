@@ -1,0 +1,9 @@
+index=main sourcetype="Brute-logs"
+| rex field=message "(?i)(?<result>Failed password|Accepted password)"
+| where result='Failed password'
+| bin _time span=5m
+| stats count AS failed_attempts by _time, src_ip
+| eventstats sum(failed_attempts) AS total_failures by src_ip
+| sort -total_failures
+| head 5
+| timechart span=5m sum(failed_attempts) by src_ip
