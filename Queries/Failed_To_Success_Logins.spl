@@ -1,4 +1,4 @@
-index=main sourcetype="Brute-logs"
+index=main sourcetype="brute-logs"
 | rex field=message "(?<result>Failed password|Accepted password)"
 | stats earliest(_time) AS first_fail latest(eval (if (result=="Accepted password", _time, null))) AS first_success count(eval(result="Failed password")) AS fail_count by src_ip, user
 | where fail_count >= 5 AND isnotnull(first_success) AND first_success > first_fail
