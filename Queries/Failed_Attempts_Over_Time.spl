@@ -1,4 +1,4 @@
-index=main sourcetype="brute-logs"
+index="brute-force-logs" sourcetype="csv"
 | rex field=message "(?i)(?<result>Failed password|Accepted password)"
 | where result='Failed password'
 | bin _time span=5m
