@@ -1,5 +1,5 @@
-index=main sourcetype="brute-logs"
+index="brute-force-logs" sourcetype="csv"
 | rex field=message "(?i)(?<result>Failed password|Accepted password)"
-| where result='Failed password'
+| where result="Failed password"
 | stats count AS failed_attempts by src_ip
 | sort failed_attempts
