@@ -1,6 +1,6 @@
 index="brute-force-logs" sourcetype="csv"
 | rex field=message "(?i)(?<result>Failed password|Accepted password)"
-| where result='Failed password'
+| where result="Failed password"
 | bin _time span=5m
 | stats count AS failed_attempts by _time, src_ip
 | eventstats sum(failed_attempts) AS total_failures by src_ip
