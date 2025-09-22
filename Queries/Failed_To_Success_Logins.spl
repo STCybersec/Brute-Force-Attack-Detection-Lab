@@ -8,9 +8,7 @@ index="brute-force-logs" sourcetype="csv"
     count(eval(result="Accepted password")) AS success_count
     by src_ip, user
 | where fail_count >= 5 AND success_count > 0
-| eval time_to_compromise = if(isnotnull(success_time), success_time - first_attempt, null)
 | convert timeformat="%Y-%m-%d %H:%M:%S" ctime(first_attempt) AS first_attempt_time
 | convert timeformat="%Y-%m-%d %H:%M:%S" ctime(success_time) AS success_time
-| convert ctime(time_to_compromise) AS time_to_compromise_str
-| table src_ip, user, fail_count, success_count, first_attempt_time, success_time, time_to_compromise_str
+| table src_ip, user, fail_count, success_count, first_attempt_time, success_time
 | sort - fail_count
