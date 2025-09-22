@@ -1,0 +1,9 @@
+index="brute-force-logs" sourcetype="csv"
+| rex field=message "(?i)(?<result>Failed password|Accepted password)"
+| where result="Failed password"
+| bin _time span=5m AS time_bucket
+| stats count AS failed_attempts by time_bucket
+| sort - failed_attempts
+| head 5
+| convert timeformat="%Y-%m-%d %H:%M:%S" ctime(time_bucket)
+| table time_bucket, failed_attempts
